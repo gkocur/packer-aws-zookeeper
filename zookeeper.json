@@ -10,10 +10,10 @@
     "aws_region":          "{{env `aws_region`}}",
     "aws_secret_key":      "{{env `aws_secret_key`}}",
     "aws_ssh_username":    "admin",
-    "java_build_number":   "12",
+    "java_build_number":   "13",
     "java_major_version":  "8",
-    "java_token":          "e758a0de34e24606bca991d704f6dcbf",
-    "java_update_version": "151",
+    "java_token":          "96a7b8442fe848ef90c96a2fad6ed6d1",
+    "java_update_version": "181",
     "os_short_arch":       "x64",
     "system_locale":       "en_US",
     "zookeeper_uid":       "2006",
@@ -53,6 +53,11 @@
     {
       "type":        "file",
       "source":      "files/zookeeper/",
+      "destination": "/tmp"
+    },
+    {
+      "type":        "file",
+      "source":      "files/cloud-init/",
       "destination": "/tmp"
     },
     {
@@ -122,6 +127,8 @@
         "echo === Extra System Settings ===",
         "sudo sed -r -i -e 's/.*(GRUB_CMDLINE_LINUX_DEFAULT)=\"(.*)\"/\\1=\"\\2 elevator=deadline\"/' /etc/default/grub",
         "sudo update-grub2",
+        "echo === Custom /etc/hosts template ===",
+        "sudo cp /tmp/hosts.debian.tmpl /etc/cloud/templates/hosts.debian.tmpl",
         "echo === System Cleanup ===",
         "sudo rm -f /root/.bash_history",
         "sudo rm -f /home/{{user `aws_ssh_username`}}/.bash_history",
